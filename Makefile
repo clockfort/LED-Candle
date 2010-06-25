@@ -42,7 +42,7 @@
 
 # Target file name (without extension).
 #TARGET = blinky
-TARGET = pulsey
+TARGET = fire
 
 # List C source files here. (C dependencies are automatically generated.)
 SRC =	$(TARGET).c

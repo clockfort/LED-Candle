@@ -22,13 +22,13 @@ int main(void)
 	TCCR0A = (1<<COM0A1) | (1<<WGM00); 
 	TCCR0B = (1<<CS01);
 	
-	unsigned char i;
+	unsigned char i,j;
 	while(1){
-		if(rand()<21300){//steady state (65% chance)
+		if(rand()<8192){//steady state (25% chance)
 			OCR0A = 240;
 		}
 		else{ //flicker
-			if(rand()<16384){ //flicker pattern #1
+			if(rand()<8192){ //flicker pattern #1
 				for(i=240; i>80; --i){
 					OCR0A = i;
 					_delay_ms(3);
@@ -38,12 +38,27 @@ int main(void)
 					_delay_ms(4);
 				}
 			}
+			else if(rand()>16384){
+				for(i=240; i<255; ++i){
+					OCR0A = i;
+					_delay_ms(2);
+				}
+				for(i=255; i>240; --i){
+					OCR0A = i;
+					_delay_ms(2);
+				}
+			}
 			else{ //flicker pattern #2
-				OCR0A = 40;
-				_delay_ms(400);
-				OCR0A = 240;
+				for(i=240; i<80; --i){
+					OCR0A = i;
+					_delay_ms(2);
+				}
+				for(i=80; i<240; ++i){
+					OCR0A = i;
+					_delay_ms(3);
+				}
 			}
 		}	
-		_delay_ms(1500);
+		_delay_ms(500);
 	}
 }
