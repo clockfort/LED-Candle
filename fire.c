@@ -22,43 +22,32 @@ int main(void)
 	TCCR0A = (1<<COM0A1) | (1<<WGM00); 
 	TCCR0B = (1<<CS01);
 	
-	unsigned char i,j;
+	unsigned char i,current,next;
 	while(1){
-		if(rand()<8192){//steady state (25% chance)
-			OCR0A = 240;
+		if(rand()<24576){//75% chance
+			next = 20+rand()/139; //Just implementing a rand floor so for more light
+			for(i=current; i<next; ++i){
+				OCR0A = i;
+				_delay_us(100000/(next-current));
+			}
+			for(i=current; i>next; --i){
+				OCR0A = i;
+				_delay_us(100000/(next-current));
+			}
+			current=next;
 		}
-		else{ //flicker
-			if(rand()<8192){ //flicker pattern #1
-				for(i=240; i>80; --i){
-					OCR0A = i;
-					_delay_ms(3);
-				}
-				for(i=80; i<240; ++i){
-					OCR0A = i;
-					_delay_ms(4);
-				}
-			}
-			else if(rand()>16384){
-				for(i=240; i<255; ++i){
-					OCR0A = i;
-					_delay_ms(2);
-				}
-				for(i=255; i>240; --i){
-					OCR0A = i;
-					_delay_ms(2);
-				}
-			}
-			else{ //flicker pattern #2
-				for(i=240; i<80; --i){
-					OCR0A = i;
-					_delay_ms(2);
-				}
-				for(i=80; i<240; ++i){
-					OCR0A = i;
-					_delay_ms(3);
-				}
-			}
-		}	
-		_delay_ms(500);
+		else{
+                        next = 245;
+                        for(i=current; i<next; ++i){
+                                OCR0A = i;
+                                _delay_us(100000/(next-current));
+                        }
+                        for(i=current; i>next; --i){
+                                OCR0A = i;
+                                _delay_us(100000/(next-current));
+                        }
+                        current=next;
+		}
+		_delay_ms(100);
 	}
 }
