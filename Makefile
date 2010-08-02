@@ -13,6 +13,7 @@
 # Sander Pool
 # Frederik Rouleau
 # Carlos Lamas
+# Chris Lockfort
 #
 #----------------------------------------------------------------------------
 # On command line:
@@ -28,6 +29,9 @@
 # make program = Download the hex file to the device, using avrdude.
 #                Please customize the avrdude settings below first!
 #
+# make usb-load = Download the hex file to the device, using teensy_loader_cli
+# 		 You will need to hit the reset button on your device first.
+#
 # make debug = Start either simulavr or avarice as specified for debugging, 
 #              with avr-gdb or avr-insight as the front end for debugging.
 #
@@ -41,7 +45,6 @@
 
 
 # Target file name (without extension).
-#TARGET = blinky
 TARGET = fire
 
 # List C source files here. (C dependencies are automatically generated.)
@@ -443,6 +446,10 @@ gccversion :
 program: $(TARGET).hex $(TARGET).eep
 	$(AVRDUDE) $(AVRDUDE_FLAGS) $(AVRDUDE_WRITE_FLASH) $(AVRDUDE_WRITE_EEPROM)
 
+# Program the device using (command line) Halfkay/Teensy Loader USB method
+usb-load: $(TARGET).hex
+	@echo "Please reset device into teensy loader mode"
+	teensy_loader_cli -mmcu=$(MCU) -w $(TARGET).hex
 
 # Generate avr-gdb config/init file which does the following:
 #     define the reset signal, load the target file, connect to target, and set 
